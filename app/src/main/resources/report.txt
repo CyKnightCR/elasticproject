@@ -1,0 +1,5 @@
+Write rejected Alert
+Query uuid : 59732e9b-d424-462d-a792-09bce5217e41	Time taken by Query in millis: 440367
+Query uuid : 9bd58af9-a4d7-4823-914b-93c6e8a116a0	Time taken by Query in millis: 120247
+Query uuid : 49e55f02-06b4-42fd-92d6-1ab9c55ca19c	Time taken by Query in millis: 120130
+Query uuid : e2ceacb2-c8c9-4796-b186-6f1c4ae8f7e4	Time taken by Query in millis: 120138

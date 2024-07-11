@@ -1,0 +1,11 @@
+influx:
+  token: "jPa9gGIFZRXQuZNMT7EYXeL5Lvq95K4e04UITFNiQbneep7wkjM7dgZs7JLzDGXP-crXxFPQb2K8CNHGCfXBdA=="
+  bucket: "refined"
+  org: "sprinklr"
+  url: "http://localhost:8086"
+es:
+  clusterName: "paid1-es7"
+  hostName: "localhost"
+  port: 9200
+
+
