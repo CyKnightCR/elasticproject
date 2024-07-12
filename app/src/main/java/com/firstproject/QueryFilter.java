@@ -33,7 +33,7 @@ class QueryFilter {
     private int thresholdFetchSize = 19999;
     private int thresholdTotalMatchCount = 10000;
     private int thresholdResponsesCount = 10000;
-
+    private int thresholdHitsCount = 999;
 
     //individual queries which can be cause
     class IndFilter{
@@ -88,22 +88,9 @@ class QueryFilter {
 
             return result;
         }
-        public List<QueryLog> fetchSize(@NotNull List<QueryLog> sources){
-            List<QueryLog> result = new ArrayList<QueryLog>();
-            result = sources.stream()
-                    .filter(query -> query.getFetchSize()!= null && query.getFetchSize() > thresholdFetchSize)
-                    .toList();
 
-            return result;
-        }
-//        public List<QueryLog> fetchSize(@NotNull List<QueryLog> sources){
-//            List<QueryLog> result = new ArrayList<QueryLog>();
-//            result = sources.stream()
-//                    .filter(query -> query.getAttributes() > thresholdFetchSize)
-//                    .toList();
-//
-//            return result;
-//        }
+        //not using fetch size. using hits count-> actual no of docs returned.
+
         public List<QueryLog> totalMatchCount(@NotNull List<QueryLog> sources){
             List<QueryLog> result = new ArrayList<QueryLog>();
             result = sources.stream()
@@ -120,6 +107,15 @@ class QueryFilter {
 
             return result;
         }
+
+        public List<QueryLog> hitsCount(@NotNull List<QueryLog> sources){
+            List<QueryLog> result = new ArrayList<QueryLog>();
+            result = sources.stream()
+                    .filter(query -> query.getAttributes().getHitsCount() != null && query.getAttributes().getHitsCount() > thresholdHitsCount)
+                    .toList();
+
+            return result;
+        }
     }
 
     //queries collectively putting pressure
@@ -131,35 +127,40 @@ class QueryFilter {
             try {
                 WriteApiBlocking writeApi = client.getWriteApiBlocking();
                 for (QueryLog log : sources) {
-                    Point point = Point.measurement(measurement)
-                            .addField("val", log.getFetchSize())
-                            .time(Instant.ofEpochMilli(log.getTimestamp()), WritePrecision.MS);
+                    if(log.getAttributes().getHitsCount()!= null)
+                    {
+                        Point point = Point.measurement(measurement)
+                                .addField("val", log.getAttributes().getHitsCount())
+                                .time(Instant.ofEpochMilli(log.getTimestamp()), WritePrecision.MS);
 
-                    writeApi.writePoint(point);
+                        writeApi.writePoint(point);
+                    }
                 }
             } finally {
                 client.close();
             }
+
+//
         }
 
-        public void fetchSize() {
+        public void hitsCount(Instant startTime , Instant endTime, long aggHits) {
             InfluxDBClient client = InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket);
 
             String flux = "from(bucket: \"" + bucket + "\")\n" +
                     "  |> range(start: "+ startTime +", stop: "+ endTime +")\n" +
-                    "  |> filter(fn: (r) => r._measurement == \"fetchSize\")\n" +
-                    "  |> aggregateWindow(every: 1s, fn: sum, createEmpty: false)\n" +
-                    "  |> filter(fn: (r) => r._value > " + thresholdFetchSize + ")\n" +
+                    "  |> filter(fn: (r) => r._measurement == \"hitsCount\")\n" +
+                    "  |> aggregateWindow(every: 2s, fn: sum, createEmpty: false)\n" +
+                    "  |> filter(fn: (r) => r._value > " + aggHits + ")\n" +
                     "  |> keep(columns: [\"_time\", \"_value\"])\n" +
                     "  |> yield(name: \"exceeding_values\")";
 
             QueryApi queryApi = client.getQueryApi();
             List<FluxTable> tables = queryApi.query(flux);
 
-            System.out.println("Time Window(1 sec) where FetchSize exceeds threshold value");
+//            System.out.println("Time Window(1 sec) where hitsCount exceeds threshold value");
             for (FluxTable table : tables) {
                 for (FluxRecord record : table.getRecords()) {
-                    System.out.println("Time: " + record.getTime() + ", FetchSize: " + record.getValueByKey("_value"));
+                    System.out.println("Time: " + record.getTime() + ", Aggregate hitsCount exceeding: " + record.getValueByKey("_value"));
                 }
             }
 

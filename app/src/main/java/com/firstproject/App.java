@@ -1,5 +1,7 @@
 package com.firstproject;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 public class App {
@@ -35,6 +37,15 @@ public class App {
 //            da.setTimestampList(instantd);
 //            da.filter();
 //        }
+
+
+        String reportFile = "/Users/chatraraj.regmi/Desktop/FirstProject/app/src/main/resources/report.txt";
+
+        try (FileWriter fw = new FileWriter(reportFile, false)) {
+            fw.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Looper.loop();
 

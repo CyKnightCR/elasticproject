@@ -56,7 +56,7 @@ public class QueryLog {
                 ", level='" + level + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", attributes=" + attributes +
-                ", fetchSize=" + fetchSize +
+                ", hitsCount=" + fetchSize +
                 ", timestamp=" + timestamp +
                 '}';
     }
@@ -80,6 +80,7 @@ public class QueryLog {
         private Boolean refreshInline;
         private Long totalMatchCount;
         private Long totalResponsesCount;
+        private Long hitsCount;
 
 
         // Getters and setters
@@ -147,6 +148,10 @@ public class QueryLog {
 
         public Long getTotalResponsesCount() {
             return totalResponsesCount;
+        }
+
+        public Long getHitsCount() {
+            return hitsCount;
         }
 
         @Override

@@ -6,6 +6,6 @@ influx:
 es:
   clusterName: "paid1-es7"
   hostName: "localhost"
-  port: 9200
+  port: "9200"
 
 

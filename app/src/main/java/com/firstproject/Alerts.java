@@ -36,13 +36,7 @@ abstract class Alerts {
 
             ranges.add(r);
         }
-//
-//        Instant start = Instant.parse("2024-07-02T17:55:00.000Z");
-//        Instant end = Instant.parse("2024-07-02T18:05:00.000Z");
-//        String clusterName = "paid1-es7";
-//
-//        querySources = Elastic.getLogs(start,end,clusterName);
-//
+
 
     }
 
@@ -97,15 +91,13 @@ abstract class Alerts {
     abstract void filter();
     public void kibana(){
 
-//        int cnt=0;
         for(TimeRange range: ranges){
-//            System.out.println(cnt++);
             String clusterName = Config.getProperty("es.clusterName");
             startTime = range.start;
             endTime = range.end;
-            if(startTime.isAfter(endTime)) System.out.println("time range error ");
             querySources = Elastic.getLogs(startTime,endTime,clusterName);
-            this.filter();
+
+            if(!querySources.isEmpty()) this.filter();
         }
     }
 }

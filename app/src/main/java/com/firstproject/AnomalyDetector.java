@@ -101,7 +101,6 @@ public class AnomalyDetector extends InfluxConnection {
                 obj.node = hostNode;
                 obj.val = value;
                 lst.add(obj);
-//                System.out.println("refresh inline peak at \n"+timestamp+" "+hostNode);
             }
         }
 
@@ -135,7 +134,6 @@ public class AnomalyDetector extends InfluxConnection {
                     obj.time = timestamp;
                     obj.val = value;
                     lst.add(obj);
-//                System.out.println("refresh inline peak at \n"+timestamp+" "+hostNode);
                 }
             }
             if (!lst.isEmpty()) System.out.println("shard relocating occured");
@@ -169,7 +167,6 @@ public class AnomalyDetector extends InfluxConnection {
             for (FluxRecord record : table.getRecords()) {
                 Instant timestamp = record.getTime();
                 lst.add(timestamp);
-//                System.out.println("write rejected at "+timestamp);
             }
         }
 
@@ -200,7 +197,6 @@ public class AnomalyDetector extends InfluxConnection {
             for (FluxRecord record : table.getRecords()) {
                 Instant timestamp = record.getTime();
                 lst.add(timestamp);
-//                System.out.println("OLD GC at "+timestamp);
             }
         }
 

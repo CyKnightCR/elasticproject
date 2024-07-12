@@ -12,7 +12,6 @@ public class InfluxConnection {
     public String url = "http://localhost:8086";
     public Instant startTime;
     public Instant endTime;
-    private Map<String, Object> config;
 
     public InfluxConnection(){
         setInflux();
