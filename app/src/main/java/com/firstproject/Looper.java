@@ -32,12 +32,12 @@ public class Looper {
                 AnomalyDetector ad = new AnomalyDetector();
                 ad.setRange(startTime,endTime);
 
-//                timestamps =  ad.checkWriteRejected();
-//                if(!timestamps.isEmpty()) {
-//                    Trigger.timestamps = timestamps;
-//                    Trigger.writeRejectedTrigger();
-//                }
-//                else System.out.println("no Write Rejected anomaly");
+                timestamps =  ad.checkWriteRejected();
+                if(!timestamps.isEmpty()) {
+                    Trigger.timestamps = timestamps;
+                    Trigger.writeRejectedTrigger();
+                }
+                else System.out.println("no Write Rejected anomaly");
 
                 timestamps = ad.checkDiskUsage();
                 if(!timestamps.isEmpty()) {
@@ -58,7 +58,7 @@ public class Looper {
                 startTime = startTime.plus(Duration.ofMinutes(5));
                 endTime = endTime.plus(Duration.ofMinutes(5));
 
-                //old gc time..
+                //moving to next old gc test case
                 if( startTime.isAfter(Instant.parse("2024-06-24T03:10:00.000Z")) ){
                     System.out.println("time jump");
                     startTime = Instant.parse("2024-07-02T17:50:00.000Z");
