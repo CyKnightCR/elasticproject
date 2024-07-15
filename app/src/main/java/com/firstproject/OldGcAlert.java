@@ -1,6 +1,7 @@
 package com.firstproject;
 
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 //filter in ttm. heap dump???
@@ -18,14 +19,19 @@ public class OldGcAlert extends Alerts{
         List<QueryLog> result1 =  indFilter.ttm(querySources);
         List<QueryLog> result2 =  indFilter.hitsCount(querySources);
         List<QueryLog> result3 =  indFilter.totalResponsesCount(querySources);
-        List<QueryLog> result4 =  indFilter.querySize(querySources);
+        List<QueryLog> result4 =  indFilter.totalMatchCount(querySources);
 
 
         //aggregation filter
         QueryFilter.AggFilter aggFilter = fil.new AggFilter();
 
 //        aggFilter.uploadData(querySources,"hitsCount");
-        aggFilter.hitsCount(startTime,endTime,1000);
+
+        List<String> aggHitsList = new ArrayList<>();
+        aggHitsList =  aggFilter.hitsCount(startTime,endTime,1000);
+
+
+        for(String r: aggHitsList) report(r);
 
         for(QueryLog q: result1){
 //            System.out.println(q.getDistributedTraceId()+" "+q.getAttributes().getTimeTakenMillis());
@@ -47,7 +53,7 @@ public class OldGcAlert extends Alerts{
 
         for(QueryLog q: result4){
 //            System.out.println(q.getDistributedTraceId()+" "+q.getAttributes().getTimeTakenMillis());
-            String rep = "Query uuid : "+q.getUuid()+"\tQuery Size: "+q.getAttributes().getQuerySize();
+            String rep = "Query uuid : "+q.getUuid()+"\t Total Match Count: "+q.getAttributes().getTotalMatchCount();
             report(rep);
         }
 

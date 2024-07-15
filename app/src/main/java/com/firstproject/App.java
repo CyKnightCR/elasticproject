@@ -2,8 +2,7 @@ package com.firstproject;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
+
 public class App {
 
     public static void main(String[] args) {

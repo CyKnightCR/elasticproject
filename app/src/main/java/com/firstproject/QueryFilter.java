@@ -8,6 +8,7 @@ import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApiBlocking;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxTable;
@@ -30,7 +31,7 @@ class QueryFilter {
     private int thresholdTtm = 100000;
     private int thresholdTimeTakenMillis = 100000;
     private int thresholdQuerySize = 10000;
-    private int thresholdFetchSize = 19999;
+//    private int thresholdFetchSize = 19999;
     private int thresholdTotalMatchCount = 10000;
     private int thresholdResponsesCount = 10000;
     private int thresholdHitsCount = 999;
@@ -143,7 +144,7 @@ class QueryFilter {
 //
         }
 
-        public void hitsCount(Instant startTime , Instant endTime, long aggHits) {
+        public List<String> hitsCount(Instant startTime , Instant endTime, long aggHits) {
             InfluxDBClient client = InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket);
 
             String flux = "from(bucket: \"" + bucket + "\")\n" +
@@ -157,14 +158,17 @@ class QueryFilter {
             QueryApi queryApi = client.getQueryApi();
             List<FluxTable> tables = queryApi.query(flux);
 
-//            System.out.println("Time Window(1 sec) where hitsCount exceeds threshold value");
+            List<String> result = new ArrayList();
+
             for (FluxTable table : tables) {
                 for (FluxRecord record : table.getRecords()) {
-                    System.out.println("Time: " + record.getTime() + ", Aggregate hitsCount exceeding: " + record.getValueByKey("_value"));
+                    String r = "Time: " + record.getTime() + ", Aggregate hitsCount exceeding threshold: " + record.getValueByKey("_value");
+                    result.add(r);
                 }
             }
 
             client.close();
+            return result;
         }
 
 

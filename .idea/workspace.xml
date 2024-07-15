@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="20c6d875-a164-4534-9d82-b91b411a248e" name="Changes" comment="" />
+    <list default="true" id="20c6d875-a164-4534-9d82-b91b411a248e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Bot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/TestBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Elastic.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Elastic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Looper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Looper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/OldGcAlert.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/OldGcAlert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/QueryFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/QueryFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/report.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

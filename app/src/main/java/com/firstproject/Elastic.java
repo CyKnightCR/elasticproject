@@ -22,20 +22,6 @@ import java.util.Date;
 import java.util.List;
 
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.Time;
-
-
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.aggregations.DateHistogramAggregation;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-//import co.elastic.clients.elasticsearch.core.search.aggregations.Bucket;
-//import co.elastic.clients.elasticsearch.core.search.aggregations.DateHistogramBucket;
-import co.elastic.clients.json.JsonData;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
-import org.apache.http.HttpHost;
-import org.elasticsearch.client.RestClient;
 
 
 
@@ -103,56 +89,108 @@ public class Elastic {
 
 
 
-//    public static void agg(Instant start , Instant end){
+    public static void agg(Instant start , Instant end){
+
+        long startTime = (long) start.toEpochMilli();
+        long endTime = (long) end.toEpochMilli();
+
+        RestClient restClient = RestClient.builder(new HttpHost("localhost", 9200)).build();
+
+        RestClientTransport transport = new RestClientTransport(restClient, new co.elastic.clients.json.jackson.JacksonJsonpMapper());
+
+        ElasticsearchClient client = new ElasticsearchClient(transport);
+
+        try {
+
+            SearchResponse<JsonData> searchResponse = client.search(s -> s
+                    .index("monitoring") // Replace with your index name
+                    .query(q -> q
+                            .range(r -> r
+                                    .field("timestamp")
+                                    .gte(JsonData.of(startTime))
+                                    .lte(JsonData.of(endTime))
+                            )
+                    )
+                    .size(0)
+                    .aggregations("fetchSizeSum", a -> a
+                            .sum(sum -> sum
+                                    .field("hitsCount")
+                            )
+                    ), JsonData.class);
+
+            JsonData sumResult = (JsonData) searchResponse.aggregations().get("fetchSizeSum");
+            System.out.println("Sum of hitsCount: " + sumResult.toJson());
+
+        }
+        catch (Exception e){
+            System.out.println("aggregation error in elastic call");
+        }
+        finally {
+            try{
+                restClient.close();
+            }
+            catch(Exception e){
+                System.out.println("elastic client close error");
+            }
+
+        }
+    }
+
+
+
+//    public static void agg(){
+//        Instant start = Instant.parse("2024-07-01T00:00:00Z");
+//        Instant end = Instant.parse("2024-07-31T23:59:59Z");
+//        long startTime = start.toEpochMilli();
+//        long endTime = end.toEpochMilli();
 //
-//        long startTime = (long) start.toEpochMilli();
-//        long endTime = (long) end.toEpochMilli();
+//        // Define the interval in seconds
+//        int intervalInSeconds = 300; // 5 minutes
 //
 //        RestClient restClient = RestClient.builder(new HttpHost("localhost", 9200)).build();
-//
-//        // Create the transport with the Jackson mapper
 //        RestClientTransport transport = new RestClientTransport(restClient, new co.elastic.clients.json.jackson.JacksonJsonpMapper());
-//
-//        // Create the API client
 //        ElasticsearchClient client = new ElasticsearchClient(transport);
 //
 //        try {
-//            // Define the time range for the query
-//              // Adjust end time as needed
-//
-//            // Execute a search query with a sum aggregation on the "hitsCount" field
-//            SearchResponse<JsonData> searchResponse = client.search(s -> s
+//            SearchResponse<Void> searchResponse = client.search(s -> s
 //                    .index("monitoring") // Replace with your index name
 //                    .query(q -> q
 //                            .range(r -> r
-//                                    .field("timestamp") // Adjust this field name to your timestamp field
+//                                    .field("timestamp")
 //                                    .gte(JsonData.of(startTime))
 //                                    .lte(JsonData.of(endTime))
 //                            )
 //                    )
 //                    .size(0)
-//                    .aggregations("fetchSizeSum", a -> a
-//                            .sum(sum -> sum
-//                                    .field("hitsCount") // Adjust if your field name is different
+//                    .aggregations("timestamp_histogram", a -> a
+//                            .dateHistogram(h -> h
+//                                    .field("timestamp")
+//                                    .calendarInterval(DateHistogramInterval.seconds(intervalInSeconds)) // Set the interval
+//                                    .subAggregations("sum_hitsCount", sa -> sa
+//                                            .sum(sum -> sum
+//                                                    .field("hitsCount")
+//                                            )
+//                                    )
 //                            )
-//                    ), JsonData.class);
+//                    ), Void.class);
 //
-//            // Extract and print the sum from the response
-//            JsonData sumResult = (JsonData) searchResponse.aggregations().get("fetchSizeSum");
-//            System.out.println("Sum of hitsCount: " + sumResult.toJson());
+//            DateHistogramAggregation dateHistogram = searchResponse.aggregations().get("timestamp_histogram").dateHistogram();
+//            for (DateHistogramBucket bucket : dateHistogram.buckets().array()) {
+//                SumAggregate sumAgg = bucket.aggregations().get("sum_hitsCount").sum();
+//                double sumValue = sumAgg.value();
+//                System.out.println("Time: " + bucket.keyAsString() + " - Sum of hitsCount: " + sumValue);
+//            }
 //
-//        }
-//        catch (Exception e){
+//        } catch (Exception e) {
 //            System.out.println("aggregation error in elastic call");
-//        }
-//        finally {
-//            try{
+//            e.printStackTrace();
+//        } finally {
+//            try {
 //                restClient.close();
-//            }
-//            catch(Exception e){
+//            } catch (Exception e) {
 //                System.out.println("elastic client close error");
+//                e.printStackTrace();
 //            }
-//
 //        }
 //    }
 

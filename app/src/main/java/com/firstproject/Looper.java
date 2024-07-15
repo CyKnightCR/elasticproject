@@ -39,12 +39,12 @@ public class Looper {
 //                }
 //                else System.out.println("no Write Rejected anomaly");
 
-//                timestamps = ad.checkDiskUsage();
-//                if(!timestamps.isEmpty()) {
-//                    Trigger.timestamps = timestamps;
-//                    Trigger.diskUsageTrigger();
-//                }
-//                else System.out.println("no diskUsage anomaly");
+                timestamps = ad.checkDiskUsage();
+                if(!timestamps.isEmpty()) {
+                    Trigger.timestamps = timestamps;
+                    Trigger.diskUsageTrigger();
+                }
+                else System.out.println("no diskUsage anomaly");
 
 
                 timestamps = ad.checkOldGc();
@@ -61,15 +61,15 @@ public class Looper {
                 //old gc time..
                 if( startTime.isAfter(Instant.parse("2024-06-24T03:10:00.000Z")) ){
                     System.out.println("time jump");
-                    startTime = Instant.parse("2024-07-02T13:30:00.000Z");
-                    endTime = Instant.parse("2024-07-02T13:40:00.000Z");
+                    startTime = Instant.parse("2024-07-02T17:50:00.000Z");
+                    endTime = Instant.parse("2024-07-02T18:10:00.000Z");
                 }
 
 
             } catch (Exception e) {
                 System.err.println("Exception in anomaly detection: " + e.getMessage());
             }
-            scheduler.shutdown();
+//            scheduler.shutdown();
         };
         scheduler.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
 
