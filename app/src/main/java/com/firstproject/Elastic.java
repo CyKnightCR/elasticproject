@@ -23,8 +23,6 @@ import java.util.List;
 
 
 
-
-
 public class Elastic {
 
     public static List<QueryLog> getLogs(Instant start, Instant end, String ClusterName) {
@@ -65,7 +63,7 @@ public class Elastic {
 
             // Process search results
             List<Hit<QueryLog>> hits = searchResponse.hits().hits();
-            if(hits.isEmpty()) System.out.println("empty hits received from elasticsearch");
+            if (hits.isEmpty()) System.out.println("empty hits received from elasticsearch");
             else System.out.println("hits received");
 
             List<QueryLog> querySources = new ArrayList<>();
@@ -86,8 +84,5 @@ public class Elastic {
         }
         return null;
     }
-
-
-
-
 }
+

@@ -5,9 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20c6d875-a164-4534-9d82-b91b411a248e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/KibanaLinkGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/reportKibanaLink.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Alerts.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Alerts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/AnomalyDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/AnomalyDetector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/DiskAlert.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/DiskAlert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Elastic.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Elastic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Looper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/Looper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/OldGcAlert.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/OldGcAlert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/TestBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/TestBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/firstproject/WriteRejectedAlert.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/firstproject/WriteRejectedAlert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/report.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

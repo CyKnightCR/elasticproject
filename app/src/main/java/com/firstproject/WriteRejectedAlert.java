@@ -20,6 +20,7 @@ public class WriteRejectedAlert extends Alerts {
 //            System.out.println(q.getDistributedTraceId()+" "+q.getAttributes().getTimeTakenMillis());
             String rep = "Query uuid : "+q.getUuid()+"\tTime taken by Query in millis: "+q.getAttributes().getTimeTakenMillis();
             report(rep);
+            finalUuid.add(q.getUuid());
         }
 
 

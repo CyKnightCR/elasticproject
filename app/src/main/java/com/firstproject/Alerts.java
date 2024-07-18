@@ -13,12 +13,15 @@ abstract class Alerts {
     public List<Instant> timestamp;
     public List<QueryLog> querySources = new ArrayList<QueryLog>();
     public List<TimeRange> ranges = new ArrayList<>();
-    public Instant startTime;
-    public Instant endTime;
+    public Instant rangeStart;
+    public Instant rangeEnd;
+    public List<String> finalUuid = new ArrayList<>();
     public void setTimestampList(@NotNull List<Instant> timestamp) {
         this.timestamp = timestamp;
         timestamp.sort(Instant::compareTo);
         timestamp = timestamp.stream().distinct().toList();
+
+        for(Instant i: timestamp) System.out.println("Anomaly at instant: " + i);
 
         //ranges set for kibana
         for(int i =0;i<timestamp.size();i++) {
@@ -93,11 +96,24 @@ abstract class Alerts {
 
         for(TimeRange range: ranges){
             String clusterName = Config.getProperty("es.clusterName");
-            startTime = range.start;
-            endTime = range.end;
-            querySources = Elastic.getLogs(startTime,endTime,clusterName);
+            rangeStart = range.start;
+            rangeEnd = range.end;
+            querySources = Elastic.getLogs(rangeStart, rangeEnd,clusterName);
 
             if(!querySources.isEmpty()) this.filter();
         }
+//        report(generateLink());
+        NotificationJsonObject notif = new NotificationJsonObject();
+        String alert = this.getClass().getSimpleName();
+        notif.setNotificationUrl(generateLink());
+        notif.setTitle(alert);
+        TestBot.notify(notif);
     }
+    public String generateLink(){
+        String start = timestamp.get(0).minusSeconds(300).toString();
+        String end = timestamp.get(timestamp.size()-1).minusSeconds(300).toString();
+        return KibanaLinkGenerator.generateKibanaLink(finalUuid, start,end);
+
+    }
+
 }

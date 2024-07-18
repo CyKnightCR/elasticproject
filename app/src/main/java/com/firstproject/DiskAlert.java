@@ -1,12 +1,11 @@
 package com.firstproject;
 
-import java.sql.Time;
 import java.time.Instant;
 import java.util.List;
 
 public class DiskAlert extends Alerts {
     public DiskAlert(){
-        report("disk usage alert");
+        report("\ndisk usage alert");
     }
 
     @Override
@@ -23,15 +22,16 @@ public class DiskAlert extends Alerts {
         for(QueryLog q: result){
             String rep = "time: "+q.getDate()+"\tquery uuid: "+q.getUuid()+"\tTime ttm: "+q.getAttributes().getTtm();
             report(rep);
+            finalUuid.add(q.getUuid());
         }
 
         //check shard relocation
 
         AnomalyDetector ad = new AnomalyDetector();
-        ad.setRange(startTime,endTime);
+        ad.setRange(rangeStart, rangeEnd);
         List<Passing> shardRelocating = ad.checkRelocatingShard();
-        report("\nShard Relocating");
         if(!shardRelocating.isEmpty()){
+            report("\nShard Relocating");
             for(Passing p: shardRelocating){
                 Instant time = p.time;
                 long val = p.val;

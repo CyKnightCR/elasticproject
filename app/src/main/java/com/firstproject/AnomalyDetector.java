@@ -18,7 +18,7 @@ public class AnomalyDetector extends InfluxConnection {
 //
 //        String fluxQuery = String.format(
 //                "from(bucket: \"%s\") |> range(start: %s, stop: %s) |> filter(fn: (r) => r._measurement == \"es-cluster_health_status\" and r._field == \"val\") |> sort(columns: [\"_time\"], desc: false)",
-//                bucket, startTime.toString(), endTime.toString());
+//                bucket, rangeStart.toString(), endTime.toString());
 //
 //        QueryApi queryApi = client.getQueryApi();
 //        List<FluxTable> tables = queryApi.query(fluxQuery);
@@ -47,7 +47,7 @@ public class AnomalyDetector extends InfluxConnection {
         List<Instant> lst = new ArrayList<Instant>();
 
         String measurement = "diskUsage";
-        long thresholdDiskUsage = 95;
+        long thresholdDiskUsage = 90;
         InfluxDBClient client = InfluxDBClientFactory.create(url, token.toCharArray(),org);
 
         String fluxQuery = String.format(

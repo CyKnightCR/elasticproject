@@ -1,6 +1,5 @@
 package com.firstproject;
 
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class OldGcAlert extends Alerts{
 //        aggFilter.uploadData(querySources,"hitsCount");
 
         List<String> aggHitsList = new ArrayList<>();
-        aggHitsList =  aggFilter.hitsCount(startTime,endTime,1000);
+        aggHitsList =  aggFilter.hitsCount(rangeStart, rangeEnd,1000);
 
 
         for(String r: aggHitsList) report(r);
@@ -37,24 +36,28 @@ public class OldGcAlert extends Alerts{
 //            System.out.println(q.getDistributedTraceId()+" "+q.getAttributes().getTimeTakenMillis());
             String rep = "Query uuid : "+q.getUuid()+"\tTime taken by Query in millis: "+q.getAttributes().getTtm();
             report(rep);
+            finalUuid.add(q.getUuid());
         }
 
         for(QueryLog q: result2){
 //            System.out.println(q.getDistributedTraceId()+" "+q.getAttributes().getTimeTakenMillis());
             String rep = "Query uuid : "+q.getUuid()+"\tTotal hits Count: "+q.getAttributes().getHitsCount();
             report(rep);
+            finalUuid.add(q.getUuid());
         }
 
         for(QueryLog q: result3){
 //            System.out.println(q.getDistributedTraceId()+" "+q.getAttributes().getTimeTakenMillis());
             String rep = "Query uuid : "+q.getUuid()+"\tTotal Response Count: "+q.getAttributes().getTotalResponsesCount();
             report(rep);
+            finalUuid.add(q.getUuid());
         }
 
         for(QueryLog q: result4){
 //            System.out.println(q.getDistributedTraceId()+" "+q.getAttributes().getTimeTakenMillis());
             String rep = "Query uuid : "+q.getUuid()+"\t Total Match Count: "+q.getAttributes().getTotalMatchCount();
             report(rep);
+            finalUuid.add(q.getUuid());
         }
 
         // aggregate fetch size

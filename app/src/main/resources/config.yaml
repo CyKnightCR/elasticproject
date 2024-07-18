@@ -7,5 +7,6 @@ es:
   clusterName: "paid1-es7"
   hostName: "localhost"
   port: "9200"
+  kibanaBaseURL: "https://prod-kibana.sprinklr.com/app/discover#/"
 
 

@@ -1,44 +1,81 @@
 package com.firstproject;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class TestBot {
-    public static void main() {
-        String url = "http://localhost:3978/api/notification";
-        String resultContent = "ddd";
+
+    public static void notify(NotificationJsonObject jsonObject) {
+        // Define the URL
+        String urlString = "http://localhost:3978/api/notification";
+
+        // Create a JSON object
+//        NotificationJsonObject jsonObject = new NotificationJsonObject();
+//        jsonObject.setTitle("New Anomaly Occurred!");
+//        jsonObject.setNotificationUrl("https://aka.ms/teamsfx-notification-new");
+
+        // Convert the JSON object to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = "";
         try {
-            resultContent = new String(Files.readAllBytes(Paths.get("/Users/chatraraj.regmi/Desktop/FirstProject/app/src/main/resources/report.txt")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String jsonInputString = "{ \"message\": \"" + resultContent + "\" }";
-
-        try (CloseableHttpClient client = HttpClients.createDefault()) {
-            HttpPost post = new HttpPost(url);
-            post.setHeader("Content-Type", "application/json");
-            post.setHeader("Accept", "application/json");
-
-            StringEntity entity = new StringEntity(jsonInputString);
-            post.setEntity(entity);
-
-            try (CloseableHttpResponse response = client.execute(post)) {
-                int responseCode = response.getStatusLine().getStatusCode();
-                System.out.println("Response code: " + responseCode);
-
-                String responseBody = EntityUtils.toString(response.getEntity());
-                System.out.println("Response: " + responseBody);
-            }
+            json = objectMapper.writeValueAsString(jsonObject);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Send the HTTP POST request
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = json.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (InputStream is = connection.getInputStream()) {
+                    String response = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                    System.out.println("Response: " + response);
+                }
+            } else {
+                System.out.println("POST request did not work.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class NotificationJsonObject {
+    private String title;
+    private String notificationUrl;
+
+    // Getters and Setters
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getNotificationUrl() {
+        return notificationUrl;
+    }
+
+    public void setNotificationUrl(String notificationUrl) {
+        this.notificationUrl = notificationUrl;
     }
 }

@@ -12,11 +12,11 @@ public class Looper {
     private static List<Instant> timestamps = new ArrayList<>();
 
 //    disk anomaly time
-//    private static Instant startTime = Instant.parse("2024-06-25T18:10:00.000Z");
+//    private static Instant rangeStart = Instant.parse("2024-06-25T18:10:00.000Z");
 //    private static Instant endTime = Instant.parse("2024-06-25T18:40:00.000Z");
 
 //    write rejected
-//    private static Instant startTime = Instant.parse("2024-06-23T10:20:00.000Z");
+//    private static Instant rangeStart = Instant.parse("2024-06-23T10:20:00.000Z");
 //    private static Instant endTime = Instant.parse("2024-06-23T10:40:00.000Z");
 
 //    old gc
@@ -32,19 +32,19 @@ public class Looper {
                 AnomalyDetector ad = new AnomalyDetector();
                 ad.setRange(startTime,endTime);
 
-                timestamps =  ad.checkWriteRejected();
-                if(!timestamps.isEmpty()) {
-                    Trigger.timestamps = timestamps;
-                    Trigger.writeRejectedTrigger();
-                }
-                else System.out.println("no Write Rejected anomaly");
-
-                timestamps = ad.checkDiskUsage();
-                if(!timestamps.isEmpty()) {
-                    Trigger.timestamps = timestamps;
-                    Trigger.diskUsageTrigger();
-                }
-                else System.out.println("no diskUsage anomaly");
+//                timestamps =  ad.checkWriteRejected();
+//                if(!timestamps.isEmpty()) {
+//                    Trigger.timestamps = timestamps;
+//                    Trigger.writeRejectedTrigger();
+//                }
+//                else System.out.println("no Write Rejected anomaly");
+//
+//                timestamps = ad.checkDiskUsage();
+//                if(!timestamps.isEmpty()) {
+//                    Trigger.timestamps = timestamps;
+//                    Trigger.diskUsageTrigger();
+//                }
+//                else System.out.println("no diskUsage anomaly");
 
 
                 timestamps = ad.checkOldGc();
@@ -55,10 +55,10 @@ public class Looper {
                 else System.out.println("no old gc anomaly");
 
                 //move the window to next range
-                startTime = startTime.plus(Duration.ofMinutes(5));
-                endTime = endTime.plus(Duration.ofMinutes(5));
+                startTime = startTime.plus(Duration.ofMinutes(10));
+                endTime = endTime.plus(Duration.ofMinutes(10));
 
-                //moving to next old gc test case
+//                moving to next old gc test case
                 if( startTime.isAfter(Instant.parse("2024-06-24T03:10:00.000Z")) ){
                     System.out.println("time jump");
                     startTime = Instant.parse("2024-07-02T17:50:00.000Z");
@@ -69,7 +69,7 @@ public class Looper {
             } catch (Exception e) {
                 System.err.println("Exception in anomaly detection: " + e.getMessage());
             }
-//            scheduler.shutdown();
+            scheduler.shutdown();
         };
         scheduler.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
 
